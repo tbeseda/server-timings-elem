@@ -27,6 +27,8 @@ npm install server-timings-elem
 
 ## Usage
 
+### HTML
+
 Include the `<server-timings></server-timings>` element in your HTML document. The element will render as an unstyled `<ul>`.
 
 ```html
@@ -42,6 +44,24 @@ Include the `<server-timings></server-timings>` element in your HTML document. T
 
 <server-timings top="1"></server-timings>
 ```
+
+### JS API
+
+`<server-timings>` will emit a `server-timings` event on itself after gathering, filtering, and sorting timings. The event's `detail` property will be a dictionary of the timings by name.
+
+Also, the list of `PerformanceServerTiming` objects can be retrieved from the `timings` property.
+
+```js
+(function() {
+  const $st = document.querySelector('server-timings#unique')
+  $st.addEventListener('server-timings', ({ detail }) => {
+    console.log('server-timings', detail)
+    console.log($st.timings)
+  })
+})()
+```
+
+### CSS
 
 Sample CSS for styling the element:
 

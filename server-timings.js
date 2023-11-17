@@ -1,12 +1,32 @@
 class ServerTimings extends HTMLElement {
-  timings = []
+  timings
+  timingsTable
 
   constructor () {
     super()
     this.$ul = this.appendChild(document.createElement('ul'))
   }
 
-  gatherTimings(){
+  static get timings () { return this.timings }
+
+  static get timingsTable () { return this.timingsTable }
+
+  parseAttributes () {
+    const log = this.hasAttribute('log')
+    const quiet = this.hasAttribute('quiet')
+    const exclude = this.getAttribute('exclude')?.split(',') || []
+    const sep = this.getAttribute('sep') || ' '
+
+    const topStr = this.getAttribute('top')
+    const top = topStr ? parseInt(topStr) : Infinity
+
+    const thresholdStr = this.getAttribute('threshold')
+    const threshold = thresholdStr ? parseInt(thresholdStr) : 0
+
+    return { log, quiet, exclude, top, threshold, sep }
+  }
+
+  gatherTimings () {
     let timings = []
     for (const entryType of ['navigation', 'resource'])
       for (const { serverTiming } of performance.getEntriesByType(entryType))
@@ -16,35 +36,33 @@ class ServerTimings extends HTMLElement {
   }
 
   connectedCallback () {
-    const log = this.hasAttribute('log')
-    const exclude = this.getAttribute('exclude')?.split(',') || []
-    const topStr = this.getAttribute('top')
-    const top = topStr ? parseInt(topStr) : Infinity
-    const thresholdStr = this.getAttribute('threshold')
-    const threshold = thresholdStr ? parseInt(thresholdStr) : 0
-    const sep = this.getAttribute('sep') || ' '
+    const { log, quiet, exclude, top, threshold, sep } = this.parseAttributes()
 
-    this.timings = this.gatherTimings()
+    const timings = this.gatherTimings()
       .filter(({ name }) => !exclude.includes(name))
       .filter(({ duration }) => duration >= threshold)
       .sort((a, b) => b.duration - a.duration)
       .slice(0, top)
 
-    this.$ul.innerHTML = this.timings
-      .map(({ name, duration }) => `<li>${name}${sep}${duration} ms</li>`)
+    this.$ul.innerHTML = timings
+      .map(({ name, duration }) => `<li><span>${name}${sep}</span><span>${duration} ms</span></li>`)
       .join('')
 
-    if (log) {
-      console.table(
-        this.timings.reduce(
-          (t, { name, description, duration }) => {
-            t[name] = { description, duration: `${duration} ms` };
-            return t;
-          },
-          {},
-        )
-      )
-    }
+    const timingsTable = timings.reduce(
+      (t, { name, description, duration }) => {
+        t[name] = { description, duration: `${duration} ms` };
+        return t;
+      },
+      {},
+    )
+
+    this.timings = timings
+    this.timingsTable = timingsTable
+
+    if (log) console.table(timingsTable)
+
+    const event = new CustomEvent('server-timings', { detail: timingsTable, bubbles: true });
+    if (!quiet) this.dispatchEvent(event);
   }
 }
 

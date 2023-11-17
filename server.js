@@ -71,13 +71,13 @@ const server = http.createServer(async ({method, url}, res) => {
             border-radius: 0.25rem;
           }
 
-          server-timings#styled {
+          server-timings#unique {
             display: block;
             padding: 1rem;
             font-family: monospace;
             color: cornflowerblue;
           }
-          server-timings#styled ul {
+          server-timings#unique ul {
             margin: 0;
             padding: 0;
             list-style: none;
@@ -87,11 +87,11 @@ const server = http.createServer(async ({method, url}, res) => {
             justify-content: center;
             gap: 0.75rem;
           }
-          server-timings#styled li {
+          server-timings#unique li {
             border-right: 1px solid #ccc;
             padding-right: 0.75rem;
           }
-          server-timings#styled li:last-child {
+          server-timings#unique li:last-child {
             border-right: none;
             padding-right: 0;
           }
@@ -141,9 +141,19 @@ const server = http.createServer(async ({method, url}, res) => {
 
         <p>Custom styles.</p>
         <example-output class="wide">
-          <pre><code>&lt;server-timings id="styled"&gt;&lt;/server-timings&gt;</code></pre>
-          <server-timings id="styled"></server-timings>
+          <pre><code>&lt;server-timings id="unique"&gt;&lt;/server-timings&gt;</code></pre>
+          <server-timings id="unique"></server-timings>
         </example-output>
+
+        <script>
+          (function() {
+            const $st = document.querySelector('server-timings#unique')
+            $st.addEventListener('server-timings', ({ detail }) => {
+              console.log('server-timings', detail)
+              console.log($st.timings)
+            })
+          })()
+        </script>
       </body>
     </html>
   `)
