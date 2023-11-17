@@ -1,0 +1,25 @@
+{
+  "name": "server-timings-elem",
+  "version": "0.0.1",
+  "description": "HTML custom element for displaying Server-Timing headers",
+  "license": "MIT",
+  "author": "tbeseda",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tbeseda/server-timings-elem.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tbeseda/server-timings-elem/issues"
+  },
+  "type": "module",
+  "main": "server-timings.js",
+  "files": [
+    "server-timings.js"
+  ],
+  "scripts": {
+    "start": "npx nodemon server.js"
+  },
+  "devDependencies": {
+    "header-timers": "^0.2.0"
+  }
+}
