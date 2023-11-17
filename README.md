@@ -32,9 +32,32 @@ Include the `<server-timings></server-timings>` element in your HTML document. T
 ```html
 <server-timings></server-timings>
 
-<server-timings log exclude="fast,server"></server-timings>
+<server-timings log></server-timings>
 
-<server-timings id="styled"></server-timings>
+<server-timings exclude="fast,db"></server-timings>
+
+<server-timings sep=": "></server-timings>
+
+<server-timings threshold="250"></server-timings>
+
+<server-timings top="1"></server-timings>
+```
+
+Sample CSS for styling the element:
+
+```css
+server-timings {
+  display: block;
+}
+server-timings ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1.5rem;
+}
 ```
 
 ## Links

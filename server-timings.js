@@ -1,5 +1,5 @@
 class ServerTimings extends HTMLElement {
-  timings = {}
+  timings = []
 
   constructor () {
     super()
@@ -18,11 +18,20 @@ class ServerTimings extends HTMLElement {
   connectedCallback () {
     const log = this.hasAttribute('log')
     const exclude = this.getAttribute('exclude')?.split(',') || []
+    const topStr = this.getAttribute('top')
+    const top = topStr ? parseInt(topStr) : Infinity
+    const thresholdStr = this.getAttribute('threshold')
+    const threshold = thresholdStr ? parseInt(thresholdStr) : 0
+    const sep = this.getAttribute('sep') || ' '
 
-    this.timings = this.gatherTimings().filter(({ name }) => !exclude.includes(name))
+    this.timings = this.gatherTimings()
+      .filter(({ name }) => !exclude.includes(name))
+      .filter(({ duration }) => duration >= threshold)
+      .sort((a, b) => b.duration - a.duration)
+      .slice(0, top)
 
     this.$ul.innerHTML = this.timings
-      .map(({ name, duration }) => `<li>${name} ${duration} ms</li>`)
+      .map(({ name, duration }) => `<li>${name}${sep}${duration} ms</li>`)
       .join('')
 
     if (log) {

@@ -40,14 +40,35 @@ const server = http.createServer(async ({method, url}, res) => {
             font-family: sans-serif;
             margin: 0 auto;
             max-width: 50rem;
+            background: #efefef;
           }
-          hr {
-            border: none;
-            border-top: 1px solid #ccc;
+          pre, ul {
+            margin: 0;
           }
           code {
-            background: #eee;
             padding: 0.25rem;
+            border-radius: 0.25rem;
+            background: #fff;
+          }
+
+          example-output {
+            max-width: 45rem;
+            margin: 0 auto 1rem auto;
+            padding: 1.5rem;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 0.25rem;
+            display: grid;
+            grid-template-columns: 25rem 1fr;
+            gap: 1rem;
+          }
+          example-output.wide {
+            grid-template-columns: 1fr;
+          }
+          example-output pre code {
+            background: #efefef;
+            padding: 0.25rem;
+            border-radius: 0.25rem;
           }
 
           server-timings#styled {
@@ -64,29 +85,65 @@ const server = http.createServer(async ({method, url}, res) => {
             flex-direction: row;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 1.5rem;
+            gap: 0.75rem;
           }
           server-timings#styled li {
-            margin: 0;
-            padding: 0;
+            border-right: 1px solid #ccc;
+            padding-right: 0.75rem;
+          }
+          server-timings#styled li:last-child {
+            border-right: none;
+            padding-right: 0;
           }
         </style>
       </head>
       <body>
         <h1>Server Timings Elem</h1>
-        <hr>
-        <p>Base element checks for and displays all server timing entries as an unordered list.</p>
-        <pre><code>&lt;server-timings&gt;&lt;/server-timings&gt;</code></pre>
-        <server-timings></server-timings>
-        <hr>
-        <p>Enable console log of timings. Exclude the "fast" and "server" entries.</p>
-        <p><small>Open the devtools to see the server timings log.</small></p>
-        <pre><code>&lt;server-timings log exclude="fast,server"&gt;&lt;/server-timings&gt;</code></pre>
-        <server-timings log exclude="fast,server"></server-timings>
-        <hr>
+        <h2>Examples</h2>
+        <h3>The original header string:</h3>
+        <h4><code>${timers.value()}</code></h4>
+
+        <p>
+          Base element checks for, sorts, and displays all server timing entries as an unordered list. Also enable console log of timings.
+          <small>Open the devtools to see the server timings log.</small>
+        </p>
+        <example-output>
+          <pre><code>&lt;server-timings log&gt;&lt;/server-timings&gt;</code></pre>
+          <server-timings log></server-timings>
+        </example-output>
+
+        <p>
+          Exclude the "fast" and "server" entries.
+          <small>("exclude" also applies to the log.)</small>
+        </p>
+        <example-output>
+          <pre><code>&lt;server-timings exclude="fast,db"&gt;&lt;/server-timings&gt;</code></pre>
+          <server-timings exclude="fast,db"></server-timings>
+        </example-output>
+
+        <p>List item formatting via "separator"</p>
+        <example-output>
+          <pre><code>&lt;server-timings sep=": "&gt;&lt;/server-timings&gt;</code></pre>
+          <server-timings sep=": "></server-timings>
+        </example-output>
+
+        <p>Set a threshold of <code>N</code>ms.</p>
+        <example-output>
+          <pre><code>&lt;server-timings threshold="250"&gt;&lt;/server-timings&gt;</code></pre>
+          <server-timings threshold="250"></server-timings>
+        </example-output>
+
+        <p>Show "top" slowest/longest <code>N</code> timing entries.</p>
+        <example-output>
+          <pre><code>&lt;server-timings top="1"&gt;&lt;/server-timings&gt;</code></pre>
+          <server-timings top="1"></server-timings>
+        </example-output>
+
         <p>Custom styles.</p>
-        <pre><code>&lt;server-timings id="styled"&gt;&lt;/server-timings&gt;</code></pre>
-        <server-timings id="styled"></server-timings>
+        <example-output class="wide">
+          <pre><code>&lt;server-timings id="styled"&gt;&lt;/server-timings&gt;</code></pre>
+          <server-timings id="styled"></server-timings>
+        </example-output>
       </body>
     </html>
   `)
