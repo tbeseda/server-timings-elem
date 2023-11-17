@@ -61,6 +61,8 @@ Also, the list of `PerformanceServerTiming` objects can be retrieved from the `t
 })()
 ```
 
+The event can be disabled with the `quiet` attribute.
+
 ### CSS
 
 Sample CSS for styling the element:
