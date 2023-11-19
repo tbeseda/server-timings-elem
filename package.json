@@ -1,6 +1,6 @@
 {
   "name": "server-timings-elem",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "HTML custom element for displaying Server-Timing headers",
   "license": "MIT",
   "author": "tbeseda",
