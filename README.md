@@ -33,17 +33,21 @@ Include the `<server-timings></server-timings>` element in your HTML document. T
 
 ```html
 <server-timings></server-timings>
-
 <server-timings log></server-timings>
-
-<server-timings exclude="fast,db"></server-timings>
-
+<server-timings exclude="fast,cdn-*"></server-timings>
 <server-timings sep=": "></server-timings>
-
 <server-timings threshold="250"></server-timings>
-
 <server-timings top="1"></server-timings>
 ```
+
+#### Attributes
+
+- `log` - Log the timings to the console as a table.
+- `exclude` - Comma-separated list of names to exclude from the list.
+  - Supports wildcard `*` at the end of a name.
+- `sep` - Separator string to use between the name and duration.
+- `threshold` - Minimum duration in ms to display.
+- `top` - Number of greatest duration timings to display.
 
 ### JS API
 

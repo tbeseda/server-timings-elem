@@ -117,8 +117,8 @@ const server = http.createServer(async ({method, url}, res) => {
           <small>("exclude" also applies to the log.)</small>
         </p>
         <example-output>
-          <pre><code>&lt;server-timings exclude="fast,db"&gt;&lt;/server-timings&gt;</code></pre>
-          <server-timings exclude="fast,db"></server-timings>
+          <pre><code>&lt;server-timings exclude="fast,d*"&gt;&lt;/server-timings&gt;</code></pre>
+          <server-timings exclude="fast,d*"></server-timings>
         </example-output>
 
         <p>List item formatting via "separator"</p>

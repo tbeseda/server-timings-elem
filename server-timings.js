@@ -23,7 +23,11 @@ class ServerTimings extends HTMLElement {
     const thresholdStr = this.getAttribute('threshold')
     const threshold = thresholdStr ? parseInt(thresholdStr) : 0
 
-    return { log, quiet, exclude, top, threshold, sep }
+    const excludeSplat = exclude
+      .filter(e => e.includes('*'))
+      .map(e => e.replace('*', ''))
+
+    return { log, quiet, exclude, excludeSplat, top, threshold, sep }
   }
 
   gatherTimings () {
@@ -36,10 +40,11 @@ class ServerTimings extends HTMLElement {
   }
 
   connectedCallback () {
-    const { log, quiet, exclude, top, threshold, sep } = this.parseAttributes()
+    const { log, quiet, exclude, excludeSplat, top, threshold, sep } = this.parseAttributes()
 
     const timings = this.gatherTimings()
       .filter(({ name }) => !exclude.includes(name))
+      .filter(({ name }) => !excludeSplat.some(e => name.startsWith(e)))
       .filter(({ duration }) => duration >= threshold)
       .sort((a, b) => b.duration - a.duration)
       .slice(0, top)
